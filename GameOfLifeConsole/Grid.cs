@@ -4,16 +4,24 @@ using System.Text;
 using System.Linq;
 namespace GameOfLifeConsole
 {
+    /// <summary>
+    /// Immutable representation of the game world.
+    /// </summary>
     public class Grid
     {
+        /// <summary>
+        /// Produces a grid of 
+        /// </summary>
+        /// <param name="sizeX"></param>
+        /// <param name="sizeY"></param>
         public Grid(long sizeX, long sizeY)
         {
             Cells = new Cell[sizeX, sizeY];
         }
         /// <summary>
-        /// Rectangular Array
+        /// Rectangular Array, immutable. Represents game world.
         /// </summary>
-        public Cell[,] Cells { get; private set; }
+        public readonly Cell[,] Cells;
         /// <summary>
         /// Furthest valid X coordinate
         /// </summary>
@@ -22,17 +30,31 @@ namespace GameOfLifeConsole
         /// Furthest valid Y coordinate
         /// </summary>
         public long YBoundry => Cells.GetLongLength(1) - 1;
-
+        /// <summary>
+        /// Determines if a given coord is within the X and Y boundries. (To prevent out of range access on Cells array)
+        /// </summary>
+        /// <param name="x">X Coord to test</param>
+        /// <param name="y">Y Coord to test</param>
+        /// <returns>True if the area is within the bounds of the Cells array, False otherwise.</returns>
         public bool ValidCoord(long x, long y)
         {
             return ValidX(x) && ValidY(y);
         }
-
+        /// <summary>
+        /// Determines if given X coord is within the range of Cells.
+        /// </summary>
+        /// <param name="x">Coordinate to check</param>
+        /// <returns>True if within range, False if not</returns>
         protected bool ValidX(long x)
         {
             return x >= 0 && x <= XBoundry;
         }
 
+        /// <summary>
+        /// Determines if given Y coord is within the range of Cells.
+        /// </summary>
+        /// <param name="y">Coordinate to check</param>
+        /// <returns>True if within range, False if not</returns>
         protected bool ValidY(long y)
         {
             return y >= 0 && y <= YBoundry;
@@ -101,7 +123,12 @@ namespace GameOfLifeConsole
             x--;
             return CellAt(x, y);
         }
-
+        /// <summary>
+        /// Sums the Cell values (Alive = 1, Dead = 0) of all Neighbouring Cells (including Diagonals)
+        /// </summary>
+        /// <param name="x">The Centre Cell X</param>
+        /// <param name="y">The Centre Cell Y</param>
+        /// <returns>Sum of all adjacent Cells</returns>
         public int AliveNeighbours(long x, long y)
         {
             return (int)North(x, y) +
@@ -127,6 +154,10 @@ namespace GameOfLifeConsole
             }
             return str;
         }
+        /// <summary>
+        /// Produces a list of dynamics (X, Y) which represents the coordinates of all Cells which are Cell.Alive
+        /// </summary>
+        /// <returns>A list of dynamics (X, Y) which represents the coordinates of all Cells which are Cell.Alive</returns>
         public IEnumerable<dynamic> GetAliveCells()
         {
             List<dynamic> coords = new List<dynamic>();

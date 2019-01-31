@@ -24,10 +24,10 @@ namespace GameOfLifeConsole
             {
                 g.Simulate();
                 Console.WriteLine();
-                Console.WriteLine(i + "\r\n"+ g.currentTick);
+                Console.WriteLine(i + "\r\n"+ g.CurrentTick);
             }
             Console.WriteLine("Alive Cells: ");
-            foreach (dynamic o in g.currentTick.GetAliveCells())
+            foreach (dynamic o in g.CurrentTick.GetAliveCells())
                 Console.WriteLine(String.Format("{0}:{1}", o.X, o.Y));
             Console.Read();
         }

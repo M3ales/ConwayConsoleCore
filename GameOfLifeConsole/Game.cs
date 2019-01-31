@@ -4,38 +4,54 @@ using System.Text;
 
 namespace GameOfLifeConsole
 {
+    /// <summary>
+    /// Performs Game Logic (and Rules) on Grid instances.
+    /// </summary>
     public class Game
     {
+        /// <summary>
+        /// Produces a game with an empty grid of the given size.
+        /// </summary>
+        /// <param name="xSize">X size of the playing space</param>
+        /// <param name="ySize">Y size of the playing space</param>
         public Game(long xSize, long ySize)
         {
-            currentTick = new Grid(xSize, ySize);
+            CurrentTick = new Grid(xSize, ySize);
         }
-
+        /// <summary>
+        /// Produces a game with a given grid.
+        /// </summary>
+        /// <param name="grid"></param>
         public Game(Grid grid)
         {
-            currentTick = grid;
+            CurrentTick = grid;
         }
 
-        public Grid currentTick;
+        public Grid CurrentTick { get; private set; }
 
+        /// <summary>
+        /// Applies the ruleset on the currentTick's grid, and produces a result. Current Tick is Immutable.
+        /// </summary>
+        /// <returns></returns>
         public Grid Tick()
         {
-            Grid next = new Grid(currentTick.XBoundry + 1, currentTick.YBoundry + 1);
-            next = MergedRuleset(next, currentTick);
+            Grid next = new Grid(CurrentTick.XBoundry + 1, CurrentTick.YBoundry + 1);
+            next = ApplyRuleset(next, CurrentTick);
             return next;
         }
 
         public void Simulate()
         {
-            currentTick = Tick();
+            CurrentTick = Tick();
         }
+
         /// <summary>
         /// Applies underpop, overpop, survival and reproduction steps in one tick set.
         /// </summary>
         /// <param name="next"></param>
         /// <param name="current"></param>
         /// <returns></returns>
-        public Grid MergedRuleset(Grid next, Grid current)
+        protected Grid ApplyRuleset(Grid next, Grid current)
         {
             for (int i = 0; i <= current.XBoundry; i++)
             {
