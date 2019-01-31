@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-
+using System.Linq;
 namespace GameOfLifeConsole
 {
     public class Grid
@@ -68,7 +68,7 @@ namespace GameOfLifeConsole
             x++;
             return CellAt(x, y);
         }
-        
+
         public Cell SouthEast(long x, long y)
         {
             y++;
@@ -94,7 +94,7 @@ namespace GameOfLifeConsole
             x--;
             return CellAt(x, y);
         }
-        
+
         public Cell NorthWest(long x, long y)
         {
             y--;
@@ -104,14 +104,14 @@ namespace GameOfLifeConsole
 
         public int AliveNeighbours(long x, long y)
         {
-            return (int)North(x, y) + 
+            return (int)North(x, y) +
                 (int)NorthEast(x, y) +
                 (int)East(x, y) +
                 (int)SouthEast(x, y) +
                 (int)South(x, y) +
-                (int)SouthWest(x, y) + 
+                (int)SouthWest(x, y) +
                 (int)West(x, y) +
-                (int)NorthWest(x,y);
+                (int)NorthWest(x, y);
         }
 
         public override string ToString()
@@ -126,6 +126,24 @@ namespace GameOfLifeConsole
                 str += "\n";
             }
             return str;
+        }
+        public IEnumerable<dynamic> GetAliveCells()
+        {
+            List<dynamic> coords = new List<dynamic>();
+            for (int i = 0; i < YBoundry; i++)
+                for (int j = 0; j < XBoundry; j++)
+                {
+                    if (Cells[j, i] == Cell.Alive)
+                    {
+                        var coord = new
+                        {
+                            X = j,
+                            Y = i
+                        };
+                        coords.Add(coord);
+                    }
+                }
+            return coords;
         }
     }
 }

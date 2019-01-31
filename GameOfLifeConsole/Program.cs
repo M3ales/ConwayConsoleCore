@@ -1,5 +1,5 @@
 ﻿using System;
-
+using System.Linq;
 namespace GameOfLifeConsole
 {
     class Program
@@ -26,6 +26,9 @@ namespace GameOfLifeConsole
                 Console.WriteLine();
                 Console.WriteLine(i + "\r\n"+ g.currentTick);
             }
+            Console.WriteLine("Alive Cells: ");
+            foreach (dynamic o in g.currentTick.GetAliveCells())
+                Console.WriteLine(String.Format("{0}:{1}", o.X, o.Y));
             Console.Read();
         }
     }
